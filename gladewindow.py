@@ -1,10 +1,33 @@
-#!/usr/bin/env python3.3
+#!/usr/bin/env python
 # -*- encoding: UTF-8 -*-
 
 # A simple Glade Builder class.
 # 2013 (c) Alexandre Vicenzi (vicenzi.alexandre at gmail com)
 
-from gi.repository import Gtk
+import sys
+
+GTK3 = sys.version_info.major == 3
+
+if GTK3:
+	try:
+		from gi.repository import Gtk	
+	except Exception, e:
+		print('Failed to load Gtk: ' + e.message)
+		sys.exit(1)
+else:
+	try:
+		import pygtk
+		pygtk.require("2.0")	
+	except Exception, e:
+		print('Failed to load PyGtk: ' + e.message)
+		sys.exit(1)
+
+  	try:
+		import gtk as Gtk
+		import gtk.glade as Glade
+	except Exception, e:
+		print('Failed to load Gtk: ' + e.message)
+		sys.exit(1)
 
 class W:
 
@@ -37,18 +60,26 @@ class W:
 				elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
 					widget.set_buffer(v)
 				
-
 class GladeWindow:
 
 	def __init__(self, glade_file, window_name):
 		self.w = W()
 
-		builder = Gtk.Builder()
-		builder.add_from_file(glade_file)
+		if GTK3:
+			builder = Gtk.Builder()
+			builder.add_from_file(glade_file)
 
-		builder.connect_signals(self)
+			builder.connect_signals(self)
 
-		self.window = builder.get_object(window_name)
+			self.window = builder.get_object(window_name)
+			self.__load_widgets()
+		else:
+			self.wTree = Glade.XML(glade_file) 
+			self.window = self.wTree.get_widget(window_name)
+
+		self.window.show_all()
+
+	def __load_widgets(self):
 
 		for c in self.__get_all_widgets():
 			name = (Gtk.Buildable.get_name(c) or '').strip()
@@ -60,8 +91,6 @@ class GladeWindow:
 				continue
 
 			setattr(self.w, name, c)
-
-		self.window.show_all()
 
 	def __get_all_widgets(self):
 
