@@ -1,7 +1,7 @@
-GladeWindow
+GladeBuilder
 ===========
 
-GladeWindow is a simple Gtk Builder for Glade files.
+GladeBuilder is a simple Gtk Builder for Glade files.
 
 
 Why is it cool?
