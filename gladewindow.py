@@ -40,7 +40,8 @@ class W:
 
 			widget = getattr(self, name)
 
-			if not issubclass(type(widget), Gtk.Widget): continue
+			if not issubclass(type(widget), Gtk.Widget):
+				continue
 
 			# TODO: Add all Gtk Widgets.
 			if isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
@@ -54,19 +55,25 @@ class W:
 		for k, v in dict.items():
 
 			if hasattr(self, k):
-
 				widget = getattr(self, k)
-				# TODO: Add all Gtk Widgets.
-				if isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
-					widget.set_text(v)
-				elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
-					widget.set_markup(v)
-				elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
-					widget.set_label(v)
-				elif isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
-					widget.set_title(v)
-				elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
-					widget.set_buffer(v)
+				
+				if not widget:
+					continue
+
+				self.__set_value(widget, v)
+
+	def __set_value(self, widget, value):
+		# TODO: Add all Gtk Widgets.
+		if isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
+			widget.set_text(value)
+		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
+			widget.set_markup(value)
+		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
+			widget.set_label(value)
+		elif isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
+			widget.set_title(value)
+		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
+			widget.set_buffer(value)
 				
 class GladeWindow:
 
