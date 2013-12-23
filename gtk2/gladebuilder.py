@@ -10,22 +10,18 @@ GTK3 = sys.version_info.major == 3
 
 if GTK3:
 	try:
-		from gi.repository import Gtk	
-	except Exception, e:
+		from gi.repository import Gtk
+	except:
 		print('Failed to load Gtk 3: ' + e.message)
 		sys.exit(1)
 else:
 	try:
 		import pygtk
 		pygtk.require("2.0")	
-	except Exception, e:
-		print('Failed to load PyGtk: ' + e.message)
-		sys.exit(1)
-
-  	try:
+		
 		import gtk as Gtk
 		import gtk.glade as Glade
-	except Exception, e:
+	except:
 		print('Failed to load Gtk 2: ' + e.message)
 		sys.exit(1)
 
@@ -62,18 +58,77 @@ class W:
 
 				self.__set_value(widget, v)
 
+	def get(self):
+		pass
+
 	def __set_value(self, widget, value):
-		# TODO: Add all Gtk Widgets.
-		if isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
-			widget.set_text(value)
-		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
-			widget.set_markup(value)
-		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
-			widget.set_label(value)
-		elif isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
+
+		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
 			widget.set_title(value)
+
+		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel):
+			widget.set_markup(v)
+
+		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.LinkButton) or issubclass(type(widget), Gtk.LinkButton):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton):
+			widget.set_label(v)
+		
+		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
+			widget.set_label(v)
+		
+		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
+			widget.set_label(v)
+		
+		elif isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
+			widget.set_text(v)
+
+		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.ProgressBar) or issubclass(type(widget), Gtk.ProgressBar):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
+			widget.set_label(v)
+		
+		elif isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText):
+			widget.set_label(v)
+		
+		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale):
+			widget.set_label(v)
+
+		elif isinstance(widget, Gtk.TreeView) or issubclass(type(widget), Gtk.TreeView):
+			widget.set_buffer(v)
+		
 		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
-			widget.set_buffer(value)
+			widget.set_label(v)
+
+		else:
+			print('Object not supported: ' + type(widget))
+		
 				
 class GladeWindow:
 
@@ -83,14 +138,14 @@ class GladeWindow:
 		if GTK3:
 			builder = Gtk.Builder()
 			builder.add_from_file(glade_file)
-
 			builder.connect_signals(self)
-
 			self.window = builder.get_object(window_name)
-			self.__load_widgets()
 		else:
-			self.wTree = Glade.XML(glade_file) 
+			self.wTree = Glade.XML(glade_file)
+			self.wTree.signal_autoconnect(self)
 			self.window = self.wTree.get_widget(window_name)
+
+		self.__load_widgets()
 
 	def __load_widgets(self):
 

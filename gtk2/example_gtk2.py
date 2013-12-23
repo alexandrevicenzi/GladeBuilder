@@ -3,13 +3,17 @@
 
 # 2013 Alexandre Vicenzi (vicenzi.alexandre at gmail com)
 
-from gi.repository import Gtk
-from gladewindow import GladeWindow
+import pygtk
+pygtk.require("2.0")	
+
+import gtk as Gtk
+
+from gladebuilder import GladeWindow
 
 class MyWindow(GladeWindow):
 
 	def __init__(self):
-		GladeWindow.__init__(self, 'win.glade', 'window1')
+		GladeWindow.__init__(self, 'example-gtk2.glade', 'window1')
 
 	def on_ok_clicked(self, *args):
 		self.w.show({'entry1': 'Foo bar', 'button1': 'OK'})
