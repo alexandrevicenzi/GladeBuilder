@@ -7,15 +7,28 @@
 import re
 import sys
 
+from datetime import datetime
 from gi.repository import Gtk
 
 class W:
 
 	def __init__(self):
 		self.defaults = {}
+		self.__set_defaults()
 
-	def set_defaults(self, dict):
-		pass
+	def __set_defaults(self):
+		self.set_default(type(Gtk.Entry), '')
+		self.set_default(type(Gtk.RadioButton), False)
+		self.set_default(type(Gtk.CheckButton), False)
+		self.set_default(type(Gtk.Spinner), False)
+		self.set_default(type(Gtk.ComboBox), -1)
+		self.set_default(type(Gtk.ComboBoxText), -1)
+		self.set_default(type(Gtk.ProgressBar), 0)
+		self.set_default(type(Gtk.TreeView), [])
+		self.set_default(type(Gtk.Calendar), datetime.today())
+
+	def set_default(self, widget_type, value):
+		self.defaults[widget_type] = value
 
 	def clear(self):
 		''' Reset window data. '''
@@ -110,7 +123,7 @@ class W:
 
 		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner): #
 			widget.active = v
-			
+
 			if v:
 				widget.start()
 			else:
