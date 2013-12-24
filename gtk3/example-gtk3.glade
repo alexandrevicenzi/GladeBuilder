@@ -70,6 +70,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="invisible_char">•</property>
+            <property name="digits">2</property>
+            <property name="update_policy">if-valid</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -153,6 +155,7 @@
             <property name="can_focus">False</property>
             <property name="receives_default">True</property>
             <property name="relief">none</property>
+            <property name="use_stock">True</property>
             <property name="focus_on_click">False</property>
             <property name="orientation">vertical</property>
           </object>
@@ -189,6 +192,8 @@ audio-volume-medium</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
+            <property name="restrict_to_fill_level">False</property>
+            <property name="fill_level">10</property>
             <property name="round_digits">1</property>
           </object>
           <packing>

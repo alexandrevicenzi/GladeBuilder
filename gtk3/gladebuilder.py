@@ -4,7 +4,9 @@
 # A simple Glade Builder class.
 # 2013 (c) Alexandre Vicenzi (vicenzi.alexandre at gmail com)
 
+import re
 import sys
+
 from gi.repository import Gtk
 
 class W:
@@ -37,61 +39,74 @@ class W:
 				
 				if not widget:
 					continue
-
+				print(k, v)
 				self.__set_value(widget, v)
 
 	def get(self):
 		pass
 
-	def __set_value(self, widget, value):
+	def __set_value(self, widget, v):
 
-		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
-			widget.set_title(value)
+		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window): #
+			widget.set_title(v)
 
-		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel):
+		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel): #
 			widget.set_markup(v)
 
-		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
+		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label): #
 			widget.set_markup(v)
 
 		elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
 			widget.set_label(v)
 
 		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton):
-			widget.set_label(v)
+			if type(v) == str:
+				widget.set_label(v)
+			else:
+				widget.set_active(v)
 
-		elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton):
-			widget.set_label(v)
+		elif isinstance(widget, Gtk.LinkButton) or issubclass(type(widget), Gtk.LinkButton): #
+			if self.__is_valid_uri(v):
+				widget.set_uri(v)
+			else:
+				widget.set_label(v)
 
-		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
-			widget.set_label(v)
-
-		elif isinstance(widget, Gtk.LinkButton) or issubclass(type(widget), Gtk.LinkButton):
-			widget.set_label(v)
-
-		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton):
-			widget.set_label(v)
+		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton): #
+			if type(v) == str:
+				widget.set_label(v)
+			else:
+				widget.set_value(v)
 		
-		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
+		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton): #
+			if type(v) == str:
+				widget.set_label(v)
+			else:
+				widget.set_value(v)
+
+		elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton): #
 			widget.set_label(v)
 
-		elif isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
+		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button): #
 			widget.set_label(v)
 		
 		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
 			widget.set_label(v)
 		
-		elif isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
-			widget.set_text(v)
-
-		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton):
+		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton): #
 			widget.set_value(v)
 
-		elif isinstance(widget, Gtk.ProgressBar) or issubclass(type(widget), Gtk.ProgressBar):
-			widget.set_label(v)
+		elif isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry): #
+			widget.set_text(v)
 
-		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner):
-			widget.set_label(v)
+		elif isinstance(widget, Gtk.ProgressBar) or issubclass(type(widget), Gtk.ProgressBar): #
+			widget.set_fraction(v)
+
+		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner): #
+			#widget.active = v
+			if v:
+				widget.start()
+			else:
+				widget.stop()
 
 		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
 			widget.set_label(v)
@@ -99,8 +114,8 @@ class W:
 		elif isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText):
 			widget.set_label(v)
 		
-		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale):
-			widget.set_label(v)
+		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale): #
+			widget.set_value(v)
 
 		elif isinstance(widget, Gtk.TreeView) or issubclass(type(widget), Gtk.TreeView):
 			widget.set_buffer(v)
@@ -110,7 +125,14 @@ class W:
 
 		else:
 			print('Object not supported: ' + type(widget))
-		
+	
+	def __is_valid_uri(self, uri):
+
+		regex = re.compile(r'^(?:http|ftp)s?://(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|'\
+			'[A-Z0-9-]{2,}\.?)|localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:/?|'\
+			'[/?]\S+)$', re.IGNORECASE)
+
+		return regex.match(uri)
 				
 class GladeWindow:
 
