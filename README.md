@@ -24,4 +24,4 @@ A method called `get` to get all widgets content.
 
 And also has a method called `clear` to reset the widget content.
 
-   MyWindow.w.clear()
+    MyWindow.w.clear()
