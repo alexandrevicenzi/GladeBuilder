@@ -66,7 +66,23 @@ class W:
 				self.__set_value(widget, v)
 
 	def get(self):
-		pass
+		''' Get window data. '''
+		
+		values = {}
+
+		for name in dir(self):
+
+			widget = getattr(self, name)
+
+			if not issubclass(type(widget), Gtk.Widget):
+				continue
+
+			value = self.__get_value(widget)
+			
+			if not value is None:
+				values[name] = value
+
+		return values
 
 	def __set_value(self, widget, v):
 
@@ -162,10 +178,10 @@ class W:
 			return widget.get_title()
 
 		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel):
-			return widget.get_markup()
+			return widget.get_label()
 
 		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
-			return widget.get_markup()
+			return widget.get_label()
 
 		elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
 			return widget.get_active()
@@ -216,10 +232,11 @@ class W:
 			return widget.get_model() # TODO:
 		
 		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
-			return widget.get_buffer().get_text()
+			#return widget.get_buffer().get_text()
+			pass
 
 		else:
-			print('** Warning: Object not supported: ' + type(widget))
+			print('** Warning: Object not supported: ')# + type(widget))
 	
 
 	def __is_valid_uri(self, uri):
@@ -273,6 +290,3 @@ class GladeWindow:
 	def show(self):
 		self.window.show_all()
 		Gtk.main()
-
-	def on_reset_clicked(self, *args):
-		self.w.clear()

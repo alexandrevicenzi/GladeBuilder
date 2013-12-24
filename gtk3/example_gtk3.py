@@ -12,8 +12,8 @@ class MyWindow(GladeWindow):
 	def __init__(self):
 		GladeWindow.__init__(self, 'example-gtk3.glade', 'window1')
 
-	def on_ok_clicked(self, *args):
-		self.w.show({'entry1': 'Foo bar', 'button1': 'OK'})
+	def on_reset_clicked(self, *args):
+		self.w.clear()
 
 	def on_close(self, *args):
 		Gtk.main_quit(*args)
@@ -115,5 +115,7 @@ if __name__ == "__main__":
 	}
 
 	Win.w.show(dict)
+
+	print(Win.w.get())
 
 	Win.show()
