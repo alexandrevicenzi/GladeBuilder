@@ -23,3 +23,5 @@ A method called `get` to get all widgets content.
     >>> {'label1': 'Some Text', 'checkbutton1': True}
 
 And also has a method called `clear` to reset the widget content.
+
+   MyWindow.w.clear()
