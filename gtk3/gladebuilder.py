@@ -18,12 +18,17 @@ class W:
 
 	def __set_defaults(self):
 		self.set_default(Gtk.Entry, '')
+		self.set_default(Gtk.TextView, '')
 		self.set_default(Gtk.RadioButton, False)
 		self.set_default(Gtk.CheckButton, False)
 		self.set_default(Gtk.Spinner, False)
 		self.set_default(Gtk.ComboBox, -1)
 		self.set_default(Gtk.ComboBoxText, -1)
 		self.set_default(Gtk.ProgressBar, 0)
+		self.set_default(Gtk.VolumeButton, 0)
+		self.set_default(Gtk.Scale, 0)
+		self.set_default(Gtk.ScaleButton, 0)
+		self.set_default(Gtk.SpinButton, 0)
 		self.set_default(Gtk.TreeView, [])
 		self.set_default(Gtk.Calendar, datetime.today())
 
@@ -65,13 +70,13 @@ class W:
 
 	def __set_value(self, widget, v):
 
-		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window): #
+		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
 			widget.set_title(v)
 
-		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel): #
+		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel):
 			widget.set_markup(v)
 
-		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label): #
+		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
 			widget.set_markup(v)
 
 		elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
@@ -80,50 +85,50 @@ class W:
 			else:
 				widget.set_active(v)
 
-		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton): #
+		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton):
 			if type(v) == str:
 				widget.set_label(v)
 			else:
 				widget.set_active(v)
 
-		elif isinstance(widget, Gtk.LinkButton) or issubclass(type(widget), Gtk.LinkButton): #
+		elif isinstance(widget, Gtk.LinkButton) or issubclass(type(widget), Gtk.LinkButton):
 			if self.__is_valid_uri(v):
 				widget.set_uri(v)
 			else:
 				widget.set_label(v)
 
-		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton): #
+		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton):
 			if type(v) == str:
 				widget.set_label(v)
 			else:
 				widget.set_value(v)
 		
-		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton): #
+		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
 			if type(v) == str:
 				widget.set_label(v)
 			else:
 				widget.set_value(v)
 
-		elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton): #
+		elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton):
 			widget.set_label(v)
 
-		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button): #
+		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
 			widget.set_label(v)
 		
-		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar): #
+		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
 			widget.select_day(v.day)
 			widget.select_month(v.month, v.year)
 		
-		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton): #
+		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton):
 			widget.set_value(v)
 
-		elif isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry): #
+		elif isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
 			widget.set_text(v)
 
-		elif isinstance(widget, Gtk.ProgressBar) or issubclass(type(widget), Gtk.ProgressBar): #
+		elif isinstance(widget, Gtk.ProgressBar) or issubclass(type(widget), Gtk.ProgressBar):
 			widget.set_fraction(v)
 
-		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner): #
+		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner):
 			widget.active = v
 
 			if v:
@@ -137,20 +142,86 @@ class W:
 		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
 			widget.set_active(v)
 		
-		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale): #
+		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale):
 			widget.set_value(v)
 
 		elif isinstance(widget, Gtk.TreeView) or issubclass(type(widget), Gtk.TreeView):
+			widget.get_model().clear()
 			for cells in v:
 				widget.get_model().append(cells)
 		
 		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
-			#widget.set_buffer(v)
 			widget.get_buffer().set_text(v)
 
 		else:
-			print('Object not supported: ' + type(widget))
+			print('** Warning: Object not supported: ' + type(widget))
 	
+	def __get_value(self, widget):
+
+		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
+			return widget.get_title()
+
+		elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel):
+			return widget.get_markup()
+
+		elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
+			return widget.get_markup()
+
+		elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
+			return widget.get_active()
+
+		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton):
+			return widget.get_active()
+
+		elif isinstance(widget, Gtk.LinkButton) or issubclass(type(widget), Gtk.LinkButton):
+			return widget.get_uri()
+
+		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton):
+			return widget.get_value()
+		
+		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
+			return widget.get_value()
+
+		elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton):
+			return widget.get_label()
+
+		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
+			return widget.get_label()
+		
+		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
+			return widget.get_date()
+		
+		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton):
+			return widget.get_value()
+
+		elif isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
+			return widget.get_text()
+
+		elif isinstance(widget, Gtk.ProgressBar) or issubclass(type(widget), Gtk.ProgressBar):
+			return widget.get_fraction()
+
+		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner):
+			return widget.active
+
+		elif isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText):
+			return widget.get_active()
+
+		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
+			return widget.get_active()
+		
+		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale):
+			return widget.get_value()
+
+		elif isinstance(widget, Gtk.TreeView) or issubclass(type(widget), Gtk.TreeView):
+			return widget.get_model() # TODO:
+		
+		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
+			return widget.get_buffer().get_text()
+
+		else:
+			print('** Warning: Object not supported: ' + type(widget))
+	
+
 	def __is_valid_uri(self, uri):
 
 		regex = re.compile(r'^(?:http|ftp)s?://(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|'\
