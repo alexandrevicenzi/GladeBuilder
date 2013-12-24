@@ -170,7 +170,7 @@ class W:
 			widget.get_buffer().set_text(v)
 
 		else:
-			print('** Warning: Object not supported: ' + type(widget))
+			print('** Warning: Object not supported: ' + widget.__class__.__name__)
 	
 	def __get_value(self, widget):
 
@@ -236,8 +236,7 @@ class W:
 			pass
 
 		else:
-			print('** Warning: Object not supported: ')# + type(widget))
-	
+			print('** Warning: Object not supported: ' + widget.__class__.__name__)
 
 	def __is_valid_uri(self, uri):
 
