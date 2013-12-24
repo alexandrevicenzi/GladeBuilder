@@ -17,21 +17,22 @@ class W:
 		self.__set_defaults()
 
 	def __set_defaults(self):
-		self.set_default(type(Gtk.Entry), '')
-		self.set_default(type(Gtk.RadioButton), False)
-		self.set_default(type(Gtk.CheckButton), False)
-		self.set_default(type(Gtk.Spinner), False)
-		self.set_default(type(Gtk.ComboBox), -1)
-		self.set_default(type(Gtk.ComboBoxText), -1)
-		self.set_default(type(Gtk.ProgressBar), 0)
-		self.set_default(type(Gtk.TreeView), [])
-		self.set_default(type(Gtk.Calendar), datetime.today())
+		self.set_default(Gtk.Entry, '')
+		self.set_default(Gtk.RadioButton, False)
+		self.set_default(Gtk.CheckButton, False)
+		self.set_default(Gtk.Spinner, False)
+		self.set_default(Gtk.ComboBox, -1)
+		self.set_default(Gtk.ComboBoxText, -1)
+		self.set_default(Gtk.ProgressBar, 0)
+		self.set_default(Gtk.TreeView, [])
+		self.set_default(Gtk.Calendar, datetime.today())
 
 	def set_default(self, widget_type, value):
 		self.defaults[widget_type] = value
 
 	def clear(self):
 		''' Reset window data. '''
+		
 		for name in dir(self):
 
 			widget = getattr(self, name)
@@ -39,9 +40,10 @@ class W:
 			if not issubclass(type(widget), Gtk.Widget):
 				continue
 
-			# TODO: Add all Gtk Widgets.
-			if isinstance(widget, Gtk.Entry) or issubclass(type(widget), Gtk.Entry):
-				widget.set_text('')
+			default = self.defaults.get(type(widget))
+
+			if not default is None:
+				self.__set_value(widget, default)
 
 	def show(self, dict):
 		''' 
@@ -200,3 +202,6 @@ class GladeWindow:
 	def show(self):
 		self.window.show_all()
 		Gtk.main()
+
+	def on_reset_clicked(self, *args):
+		self.w.clear()
