@@ -4,7 +4,7 @@
 # 2013 Alexandre Vicenzi (vicenzi.alexandre at gmail com)
 
 from datetime import datetime
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 from gladebuilder import GladeWindow
 
 class MyWindow(GladeWindow):
@@ -38,6 +38,44 @@ if __name__ == "__main__":
 	Win.w.combobox1.add_attribute(cell, "text", 0)
 	Win.w.combobox1.set_model(liststore)
 
+	textbuffer = Gtk.TextBuffer()
+	#textbuffer.set_text('this\nis\na\nmultiline\ntext')
+	Win.w.textview1.set_buffer(textbuffer)
+
+	"""
+	column = Gtk.TreeViewColumn('Column 0')
+	column1 = Gtk.TreeViewColumn('Column 1')
+	Win.w.treeview1.append_column(column)
+	Win.w.treeview1.append_column(column1)
+	cell = Gtk.CellRendererText()
+	column.pack_start(cell, True)
+	column.add_attribute(cell, 'text', 0)
+	Win.w.treeview1.set_search_column(0)
+	column.set_sort_column_id(0)
+	Win.w.treeview1.set_reorderable(True)
+	"""
+
+	columns = ["First Name",
+				"Last Name",
+				"Phone Number"]
+
+	phonebook = [["Jurg", "Billeter", "555-0123"],
+				["Johannes", "Schmid", "555-1234"],
+				["Julita", "Inca", "555-2345"],
+				["Javier", "Jardon", "555-3456"],
+				["Jason", "Clinton", "555-4567"],
+				["Random J.", "Hacker", "555-5678"]]
+
+	for i in range(len(columns)):
+		cell = Gtk.CellRendererText()
+		if i == 0:
+			cell.props.weight_set = True
+			cell.props.weight = Pango.Weight.BOLD
+		col = Gtk.TreeViewColumn(columns[i], cell, text=i)
+		Win.w.treeview1.append_column(col)
+
+	Win.w.treeview1.set_model(Gtk.ListStore(str, str, str))
+
 	dict = {
 		"window1": "Example GTK 3",
 		"button1": "Click",
@@ -55,9 +93,8 @@ if __name__ == "__main__":
 		"scale1": 0.5,
 		"scale2": 0.6,
 		"calendar1": datetime.today(),
-		#"treeview1": ,
-		#"treeview-selection1": ,
-		#"textview1": ,
+		"treeview1": phonebook,
+		"textview1": 'this\nis\na\nmultiline\ntext',
 		"radiobutton1": False,
 		"radiobutton2": True,
 		"radiobutton3": True, # The last one wins.

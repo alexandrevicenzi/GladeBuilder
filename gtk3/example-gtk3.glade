@@ -17,6 +17,8 @@
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
     <signal name="destroy" handler="on_close" swapped="no"/>
     <child>
       <object class="GtkGrid" id="grid1">
@@ -248,33 +250,6 @@ audio-volume-medium</property>
           </packing>
         </child>
         <child>
-          <object class="GtkTreeView" id="treeview1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child internal-child="selection">
-              <object class="GtkTreeSelection" id="treeview-selection1"/>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkTextView" id="textview1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox" id="box1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -363,7 +338,52 @@ audio-volume-medium</property>
           </packing>
         </child>
         <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTextView" id="textview1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
+        </child>
+        <child>
           <placeholder/>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTreeView" id="treeview1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection"/>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
+            <property name="width">1</property>
+            <property name="height">1</property>
+          </packing>
         </child>
       </object>
     </child>

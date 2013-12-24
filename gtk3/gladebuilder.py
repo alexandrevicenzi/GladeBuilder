@@ -109,7 +109,8 @@ class W:
 			widget.set_fraction(v)
 
 		elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner): #
-			#widget.active = v
+			widget.active = v
+			
 			if v:
 				widget.start()
 			else:
@@ -117,7 +118,7 @@ class W:
 
 		elif isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText):
 			widget.set_active(v)
-			
+
 		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
 			widget.set_active(v)
 		
@@ -125,10 +126,12 @@ class W:
 			widget.set_value(v)
 
 		elif isinstance(widget, Gtk.TreeView) or issubclass(type(widget), Gtk.TreeView):
-			widget.set_buffer(v)
+			for cells in v:
+				widget.get_model().append(cells)
 		
 		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
-			widget.set_label(v)
+			#widget.set_buffer(v)
+			widget.get_buffer().set_text(v)
 
 		else:
 			print('Object not supported: ' + type(widget))
