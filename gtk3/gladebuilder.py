@@ -95,8 +95,9 @@ class W:
 		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button): #
 			widget.set_label(v)
 		
-		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
-			widget.set_label(v)
+		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar): #
+			widget.select_day(v.day)
+			widget.select_month(v.month, v.year)
 		
 		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton): #
 			widget.set_value(v)
@@ -114,11 +115,11 @@ class W:
 			else:
 				widget.stop()
 
-		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
-			widget.set_label(v)
-		
 		elif isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText):
-			widget.set_label(v)
+			widget.set_active(v)
+			
+		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
+			widget.set_active(v)
 		
 		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale): #
 			widget.set_value(v)

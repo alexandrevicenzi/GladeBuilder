@@ -3,8 +3,8 @@
 
 # 2013 Alexandre Vicenzi (vicenzi.alexandre at gmail com)
 
+from datetime import datetime
 from gi.repository import Gtk
-
 from gladebuilder import GladeWindow
 
 class MyWindow(GladeWindow):
@@ -26,6 +26,18 @@ if __name__ == "__main__":
 	Win.w.spinbutton1.set_range(0.0, 1)
 
 
+	distributions = ["Fedora", "Sabayon", "Debian", "Arch Linux", "Crunchbang"]
+	liststore = Gtk.ListStore(str)
+	for item in distributions:
+		liststore.append([item])
+
+	Win.w.comboboxtext1.set_model(liststore)
+
+	cell = Gtk.CellRendererText()
+	Win.w.combobox1.pack_start(cell, True)
+	Win.w.combobox1.add_attribute(cell, "text", 0)
+	Win.w.combobox1.set_model(liststore)
+
 	dict = {
 		"window1": "Example GTK 3",
 		"button1": "Click",
@@ -33,8 +45,8 @@ if __name__ == "__main__":
 		"checkbutton1": True,
 		"entry1": "Some text",
 		"spinbutton1": 0.2,
-		#"combobox1": ,
-		#"comboboxtext1": ,
+		"combobox1": 2,
+		"comboboxtext1": 3,
 		"label1": "<b>Bold label</b>",
 		"linkbutton1": "https://www.google.com",
 		"accellabel1": "<i>Italic accellabel</i>",
@@ -42,7 +54,7 @@ if __name__ == "__main__":
 		"volumebutton1": 0.8,
 		"scale1": 0.5,
 		"scale2": 0.6,
-		#"calendar1": ,
+		"calendar1": datetime.today(),
 		#"treeview1": ,
 		#"treeview-selection1": ,
 		#"textview1": ,
