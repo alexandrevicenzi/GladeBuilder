@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkRadioButton" id="radiogroup">
+    <property name="label" translatable="yes">radiobutton</property>
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="receives_default">False</property>
+    <property name="xalign">0</property>
+    <property name="active">True</property>
+    <property name="draw_indicator">True</property>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <signal name="destroy" handler="on_close" swapped="no"/>
@@ -158,6 +172,7 @@
             <property name="use_stock">True</property>
             <property name="focus_on_click">False</property>
             <property name="orientation">vertical</property>
+            <property name="adjustment">adjustment1</property>
           </object>
           <packing>
             <property name="left_attach">1</property>
@@ -272,6 +287,7 @@ audio-volume-medium</property>
                 <property name="xalign">0</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
+                <property name="group">radiogroup</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -288,6 +304,7 @@ audio-volume-medium</property>
                 <property name="xalign">0</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
+                <property name="group">radiogroup</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -304,6 +321,7 @@ audio-volume-medium</property>
                 <property name="xalign">0</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
+                <property name="group">radiogroup</property>
               </object>
               <packing>
                 <property name="expand">False</property>

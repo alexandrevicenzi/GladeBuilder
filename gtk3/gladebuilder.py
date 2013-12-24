@@ -12,6 +12,9 @@ from gi.repository import Gtk
 class W:
 
 	def __init__(self):
+		self.defaults = {}
+
+	def set_defaults(self, dict):
 		pass
 
 	def clear(self):
@@ -39,7 +42,7 @@ class W:
 				
 				if not widget:
 					continue
-				print(k, v)
+				
 				self.__set_value(widget, v)
 
 	def get(self):
@@ -57,9 +60,12 @@ class W:
 			widget.set_markup(v)
 
 		elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
-			widget.set_label(v)
+			if type(v) == str:
+				widget.set_label(v)
+			else:
+				widget.set_active(v)
 
-		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton):
+		elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton): #
 			if type(v) == str:
 				widget.set_label(v)
 			else:
@@ -163,7 +169,7 @@ class GladeWindow:
 
 		controls = [self.window]
 		self.__get_widgets(self.window, controls)
-		return controls
+		return sorted(controls)
 	
 	def __get_widgets(self, widget, list):
 

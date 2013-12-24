@@ -46,9 +46,9 @@ if __name__ == "__main__":
 		#"treeview1": ,
 		#"treeview-selection1": ,
 		#"textview1": ,
-		#"radiobutton1": ,
-		#"radiobutton2": ,
-		#"radiobutton3": ,
+		"radiobutton1": False,
+		"radiobutton2": True,
+		"radiobutton3": True, # The last one wins.
 		"spinner1": True,
 		"progressbar1": 0.5,
 	}
@@ -59,7 +59,10 @@ if __name__ == "__main__":
 		"checkbutton1": "Is checked",
 		'volumebutton1': 'Volume',
 		'scalebutton1': 'Scale button',
-		'linkbutton1': 'Go to google.com'
+		'linkbutton1': 'Go to google.com',
+		'radiobutton1': 'First',
+		'radiobutton2': 'Second',
+		'radiobutton3': 'Third',
 	}
 
 	Win.w.show(dict)
