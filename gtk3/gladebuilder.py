@@ -8,7 +8,7 @@ import re
 import sys
 
 from datetime import datetime
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
 
 class W:
 
@@ -253,9 +253,10 @@ class GladeWindow:
 
 		builder = Gtk.Builder()
 		builder.add_from_file(glade_file)
-		builder.connect_signals(self)
+		#builder.connect_signals(self)
+		builder.connect_signals_full(self._full_callback, self)
 		self.window = builder.get_object(window_name)
-
+		
 		self.__load_widgets()
 
 	def __load_widgets(self):
@@ -286,6 +287,55 @@ class GladeWindow:
 			if issubclass(type(c), Gtk.Container):
 				self.__get_widgets(c, list)
 
+	def _full_callback(self, builder, gobj, signal_name, handler_name, connect_obj, flags, obj_or_map):
+			
+			handler = None
+
+			if isinstance(obj_or_map, dict):
+				handler = obj_or_map.get(handler_name, None)
+			else:
+				handler = getattr(obj_or_map, handler_name, None)
+
+			if handler is None:
+				#raise AttributeError('Handler %s not found' % handler_name)
+				return
+
+			if not callable(handler):
+				raise TypeError('Handler %s is not a method or function' % handler_name)
+
+			after = flags & GObject.ConnectFlags.AFTER
+			
+			if connect_obj is not None:
+				if after:
+					gobj.connect_object_after(signal_name, handler, connect_obj)
+				else:
+					gobj.connect_object(signal_name, handler, connect_obj)
+			else:
+				if after:
+					gobj.connect_after(signal_name, handler)
+				else:
+					gobj.connect(signal_name, handler)
+
+
+class Window(GladeWindow):
+
+	def __init__(self, glade_file, window_name):
+		GladeWindow.__init__(self, glade_file, window_name)
+
+	def show(self):
+		self.window.show_all()
+
+	def close(self):
+		self.window.hide()
+
+class MainWindow(GladeWindow):
+
+	def __init__(self, glade_file, window_name):
+		GladeWindow.__init__(self, glade_file, window_name)
+
 	def show(self):
 		self.window.show_all()
 		Gtk.main()
+
+	def close(self):
+		Gtk.main_quit()

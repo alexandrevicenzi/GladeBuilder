@@ -15,6 +15,47 @@
     <property name="active">True</property>
     <property name="draw_indicator">True</property>
   </object>
+  <object class="GtkWindow" id="main">
+    <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_close" swapped="no"/>
+    <child>
+      <object class="GtkBox" id="box2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkButton" id="open">
+            <property name="label" translatable="yes">Open example</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="receives_default">True</property>
+            <property name="halign">center</property>
+            <signal name="clicked" handler="on_open_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="close">
+            <property name="label" translatable="yes">Close application</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="receives_default">True</property>
+            <property name="halign">center</property>
+            <signal name="clicked" handler="on_close" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
