@@ -250,11 +250,13 @@ class GladeWindow:
 
 	def __init__(self, glade_file, window_name):
 		self.w = W()
+		self.name = window_name
 
 		builder = Gtk.Builder()
 		builder.add_from_file(glade_file)
 		#builder.connect_signals(self)
 		builder.connect_signals_full(self._full_callback, self)
+		
 		self.window = builder.get_object(window_name)
 		
 		self.__load_widgets()
@@ -289,6 +291,9 @@ class GladeWindow:
 
 	def _full_callback(self, builder, gobj, signal_name, handler_name, connect_obj, flags, obj_or_map):
 			
+			# This code is from Gtk.py #
+			# TODO: Find a better way to connect signals from a specific window.
+
 			handler = None
 
 			if isinstance(obj_or_map, dict):
@@ -304,7 +309,7 @@ class GladeWindow:
 				raise TypeError('Handler %s is not a method or function' % handler_name)
 
 			after = flags & GObject.ConnectFlags.AFTER
-			
+
 			if connect_obj is not None:
 				if after:
 					gobj.connect_object_after(signal_name, handler, connect_obj)

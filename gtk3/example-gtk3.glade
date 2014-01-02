@@ -112,7 +112,7 @@
         <child>
           <object class="GtkEntry" id="entry1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <property name="invisible_char">•</property>
           </object>
           <packing>
@@ -125,7 +125,7 @@
         <child>
           <object class="GtkSpinButton" id="spinbutton1">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can_focus">True</property>
             <property name="invisible_char">•</property>
             <property name="digits">2</property>
             <property name="update_policy">if-valid</property>
@@ -388,7 +388,7 @@ audio-volume-medium</property>
             <child>
               <object class="GtkTextView" id="textview1">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
               </object>
             </child>
           </object>
