@@ -5,12 +5,12 @@
 
 from datetime import datetime
 from gi.repository import Gtk, Pango
-from gladebuilder import MainWindow, Window
+from gladebuilder import GladeWindow
 
-class MyApp(MainWindow):
+class MyApp(GladeWindow):
 
 	def __init__(self):
-		MainWindow.__init__(self, 'example-gtk3.glade', 'main')
+		GladeWindow.__init__(self, 'example-gtk3.glade', 'main')
 
 	def on_open_clicked(self, *args):
 		Win = MyWindow()
@@ -116,12 +116,12 @@ class MyApp(MainWindow):
 
 	def on_close(self, *args):
 		self.close()
+		Gtk.main_quit()
 
-
-class MyWindow(Window):
+class MyWindow(GladeWindow):
 
 	def __init__(self):
-		Window.__init__(self, 'example-gtk3.glade', 'window1')
+		GladeWindow.__init__(self, 'example-gtk3.glade', 'window1')
 
 	def on_reset_clicked(self, *args):
 		self.w.clear()
@@ -133,4 +133,6 @@ if __name__ == "__main__":
 
 	M = MyApp()
 	M.show()
+
+	Gtk.main()
 	

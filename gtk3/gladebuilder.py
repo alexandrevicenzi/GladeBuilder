@@ -321,26 +321,8 @@ class GladeWindow:
 				else:
 					gobj.connect(signal_name, handler)
 
-
-class Window(GladeWindow):
-
-	def __init__(self, glade_file, window_name):
-		GladeWindow.__init__(self, glade_file, window_name)
-
 	def show(self):
 		self.window.show_all()
 
 	def close(self):
 		self.window.hide()
-
-class MainWindow(GladeWindow):
-
-	def __init__(self, glade_file, window_name):
-		GladeWindow.__init__(self, glade_file, window_name)
-
-	def show(self):
-		self.window.show_all()
-		Gtk.main()
-
-	def close(self):
-		Gtk.main_quit()
