@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.3
+#!/usr/bin/env python
 # -*- encoding: UTF-8 -*-
 
 # 2013 Alexandre Vicenzi (vicenzi.alexandre at gmail com)
@@ -10,7 +10,7 @@ from gladebuilder import GladeWindow
 class MyApp(GladeWindow):
 
 	def __init__(self):
-		GladeWindow.__init__(self, 'example-gtk3.glade', 'main')
+		GladeWindow.__init__(self, 'example.glade', 'main')
 
 	def on_open_clicked(self, *args):
 		Win = MyWindow()
@@ -121,7 +121,7 @@ class MyApp(GladeWindow):
 class MyWindow(GladeWindow):
 
 	def __init__(self):
-		GladeWindow.__init__(self, 'example-gtk3.glade', 'window1')
+		GladeWindow.__init__(self, 'example.glade', 'window1')
 
 	def on_reset_clicked(self, *args):
 		self.w.clear()

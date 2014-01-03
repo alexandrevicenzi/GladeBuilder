@@ -62,7 +62,7 @@ class W:
 				
 				if not widget:
 					continue
-				
+
 				self.__set_value(widget, v)
 
 	def get(self):
