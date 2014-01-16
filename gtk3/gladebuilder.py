@@ -37,7 +37,7 @@ class W:
 
 	def clear(self):
 		''' Reset window data. '''
-		
+
 		for name in dir(self):
 
 			widget = getattr(self, name)
@@ -59,7 +59,7 @@ class W:
 
 			if hasattr(self, k):
 				widget = getattr(self, k)
-				
+
 				if not widget:
 					continue
 
@@ -67,7 +67,7 @@ class W:
 
 	def get(self):
 		''' Get window data. '''
-		
+
 		values = {}
 
 		for name in dir(self):
@@ -78,7 +78,7 @@ class W:
 				continue
 
 			value = self.__get_value(widget)
-			
+
 			if not value is None:
 				values[name] = value
 
@@ -118,7 +118,7 @@ class W:
 				widget.set_label(v)
 			else:
 				widget.set_value(v)
-		
+
 		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
 			if type(v) == str:
 				widget.set_label(v)
@@ -130,11 +130,11 @@ class W:
 
 		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
 			widget.set_label(v)
-		
+
 		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
 			widget.select_day(v.day)
 			widget.select_month(v.month, v.year)
-		
+
 		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton):
 			widget.set_value(v)
 
@@ -157,7 +157,7 @@ class W:
 
 		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
 			widget.set_active(v)
-		
+
 		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale):
 			widget.set_value(v)
 
@@ -165,13 +165,13 @@ class W:
 			widget.get_model().clear()
 			for cells in v:
 				widget.get_model().append(cells)
-		
+
 		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
 			widget.get_buffer().set_text(v)
 
 		else:
 			print('** Warning: Object not supported: ' + widget.__class__.__name__)
-	
+
 	def __get_value(self, widget):
 
 		if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
@@ -194,7 +194,7 @@ class W:
 
 		elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton):
 			return widget.get_value()
-		
+
 		elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
 			return widget.get_value()
 
@@ -203,10 +203,10 @@ class W:
 
 		elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
 			return widget.get_label()
-		
+
 		elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
 			return widget.get_date()
-		
+
 		elif isinstance(widget, Gtk.SpinButton) or issubclass(type(widget), Gtk.SpinButton):
 			return widget.get_value()
 
@@ -224,16 +224,17 @@ class W:
 
 		elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
 			return widget.get_active()
-		
+
 		elif isinstance(widget, Gtk.Scale) or issubclass(type(widget), Gtk.Scale):
 			return widget.get_value()
 
 		elif isinstance(widget, Gtk.TreeView) or issubclass(type(widget), Gtk.TreeView):
 			return widget.get_model() # TODO:
-		
+
 		elif isinstance(widget, Gtk.TextView) or issubclass(type(widget), Gtk.TextView):
-			#return widget.get_buffer().get_text()
-			pass
+			start = widget.get_buffer().get_start_iter()
+			end = widget.get_buffer().get_end_iter()
+			return widget.get_buffer().get_text(start, end, True)
 
 		else:
 			print('** Warning: Object not supported: ' + widget.__class__.__name__)
@@ -245,7 +246,7 @@ class W:
 			'[/?]\S+)$', re.IGNORECASE)
 
 		return regex.match(uri)
-				
+
 class GladeWindow:
 
 	def __init__(self, glade_file, window_name):
@@ -256,16 +257,16 @@ class GladeWindow:
 		builder.add_from_file(glade_file)
 		#builder.connect_signals(self)
 		builder.connect_signals_full(self._full_callback, self)
-		
+
 		self.window = builder.get_object(window_name)
-		
+
 		self.__load_widgets()
 
 	def __load_widgets(self):
 
 		for c in self.__get_all_widgets():
 			name = (Gtk.Buildable.get_name(c) or '').strip()
-			
+
 			if name in ['', 'None']: continue
 
 			if hasattr(self.w, name):
@@ -279,7 +280,7 @@ class GladeWindow:
 		controls = [self.window]
 		self.__get_widgets(self.window, controls)
 		return sorted(controls)
-	
+
 	def __get_widgets(self, widget, list):
 
 		controls = [control for control in widget.get_children() if issubclass(type(control), Gtk.Widget)]
