@@ -1,4 +1,4 @@
-GladeBuilder
+GladeBuilder [![Build Status](https://travis-ci.org/alexandrevicenzi/GladeBuilder.svg?branch=master)](https://travis-ci.org/alexandrevicenzi/GladeBuilder)
 ===========
 
 GladeBuilder is a simple Gtk Builder for Glade files.
