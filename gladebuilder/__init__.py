@@ -9,22 +9,22 @@ import sys
 
 from datetime import datetime
 
-gtk3 = False
-gtk2 = False
+GTK2 = 2
+GTK3 = 3
+
+gtk_version = None
 
 try:
-    # Gtk+3
     from gi.repository import Gtk, GObject
-    gtk3 = True
+    gtk_version = GTK3
 except ImportError as e:
     try:
-        # Gtk+2
         import pygtk
         pygtk.require("2.0")
 
         import gtk as Gtk
         import gtk.glade as Glade
-        gtk2 = True
+        gtk_version = GTK2
     except ImportError as e:
         raise e
 
@@ -42,7 +42,7 @@ class W:
         self.set_default(Gtk.Spinner, False)
         self.set_default(Gtk.ComboBox, -1)
 
-        if gtk3:
+        if gtk_version >= GTK3:
             self.set_default(Gtk.ComboBoxText, -1)
 
         self.set_default(Gtk.ProgressBar, 0)
@@ -173,7 +173,7 @@ class W:
             else:
                 widget.stop()
 
-        elif gtk3 and (isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText)):
+        elif gtk_version >= GTK3 and (isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText)):
             widget.set_active(v)
 
         elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
@@ -240,7 +240,7 @@ class W:
         elif isinstance(widget, Gtk.Spinner) or issubclass(type(widget), Gtk.Spinner):
             return widget.active
 
-        elif gtk3 and (isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText)):
+        elif gtk_version >= GTK3 and (isinstance(widget, Gtk.ComboBoxText) or issubclass(type(widget), Gtk.ComboBoxText)):
             return widget.get_active()
 
         elif isinstance(widget, Gtk.ComboBox) or issubclass(type(widget), Gtk.ComboBox):
@@ -274,25 +274,33 @@ class GladeWindow:
         self.w = W()
         self.name = window_name
 
-        if gtk3:
+        if gtk_version >= GTK3:
             builder = Gtk.Builder()
             builder.add_from_file(glade_file)
             #builder.connect_signals(self)
-            builder.connect_signals_full(self._full_callback, self)
-
+            builder.connect_signals_full(self.__full_callback, self)
             self.window = builder.get_object(window_name)
+
+        elif gtk_version == GTK2:
+            tree = Glade.XML(glade_file)
+            tree.signal_autoconnect(self)
+            self.window = tree.get_widget(window_name)
         else:
-            wTree = Glade.XML(glade_file)
-            wTree.signal_autoconnect(self)
-            self.window = wTree.get_widget(window_name)
+            raise Exception('GTK version not supported.')
 
         self.__load_widgets()
+
+    def show(self):
+        self.window.show_all()
+
+    def close(self):
+        self.window.hide()
 
     def __load_widgets(self):
 
         for c in self.__get_all_widgets():
 
-            if gtk3:
+            if gtk_version >= GTK3:
                 name = (Gtk.Buildable.get_name(c) or '').strip()
             else:
                 name = (c.name or Gtk.Buildable.get_name(c) or '').strip()
@@ -321,40 +329,38 @@ class GladeWindow:
             if issubclass(type(c), Gtk.Container):
                 self.__get_widgets(c, list)
 
-    def _full_callback(self, builder, gobj, signal_name, handler_name, connect_obj, flags, obj_or_map):
-            
-            # This code is from Gtk.py #
-            # TODO: Find a better way to connect signals from a specific window.
+    def __full_callback(self, builder, gobj, signal_name, handler_name, connect_obj, flags, obj_or_map):
+        # Gtk+3 only.
 
-            handler = None
+        # This code is from Gtk.py #
+        # TODO: Find a better way to connect signals from a specific window.
 
-            if isinstance(obj_or_map, dict):
-                handler = obj_or_map.get(handler_name, None)
+        if not gtk_version < GTK3:
+            return
+
+        handler = None
+
+        if isinstance(obj_or_map, dict):
+            handler = obj_or_map.get(handler_name, None)
+        else:
+            handler = getattr(obj_or_map, handler_name, None)
+
+        if handler is None:
+            #raise AttributeError('Handler %s not found' % handler_name)
+            return
+
+        if not callable(handler):
+            raise TypeError('Handler %s is not a method or function' % handler_name)
+
+        after = flags & GObject.ConnectFlags.AFTER
+
+        if connect_obj is not None:
+            if after:
+                gobj.connect_object_after(signal_name, handler, connect_obj)
             else:
-                handler = getattr(obj_or_map, handler_name, None)
-
-            if handler is None:
-                #raise AttributeError('Handler %s not found' % handler_name)
-                return
-
-            if not callable(handler):
-                raise TypeError('Handler %s is not a method or function' % handler_name)
-
-            after = flags & GObject.ConnectFlags.AFTER
-
-            if connect_obj is not None:
-                if after:
-                    gobj.connect_object_after(signal_name, handler, connect_obj)
-                else:
-                    gobj.connect_object(signal_name, handler, connect_obj)
+                gobj.connect_object(signal_name, handler, connect_obj)
+        else:
+            if after:
+                gobj.connect_after(signal_name, handler)
             else:
-                if after:
-                    gobj.connect_after(signal_name, handler)
-                else:
-                    gobj.connect(signal_name, handler)
-
-    def show(self):
-        self.window.show_all()
-
-    def close(self):
-        self.window.hide()
+                gobj.connect(signal_name, handler)
