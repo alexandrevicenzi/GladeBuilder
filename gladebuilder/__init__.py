@@ -16,11 +16,12 @@ gtk_version = None
 
 try:
     from gi.repository import Gtk, GObject
+    gi.require_version('Gtk', '3.0')
     gtk_version = GTK3
 except ImportError as e:
     try:
         import pygtk
-        pygtk.require("2.0")
+        pygtk.require('2.0')
 
         import gtk as Gtk
         import gtk.glade as Glade
@@ -332,7 +333,8 @@ class GladeWindow:
     def __full_callback(self, builder, gobj, signal_name, handler_name, connect_obj, flags, obj_or_map):
         # Gtk+3 only.
 
-        # This code is from Gtk.py #
+        # This code is from Gtk.py
+        # https://git.gnome.org/browse/pygobject/tree/gi/overrides/Gtk.py
         # TODO: Find a better way to connect signals from a specific window.
 
         if not gtk_version < GTK3:
