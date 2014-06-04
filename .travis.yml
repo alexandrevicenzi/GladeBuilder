@@ -7,9 +7,9 @@ python:
     - "3.4"
     - "pypy"
 install:
+    - if [[ $TRAVIS_PYTHON_VERSION < 3.0 ]]; then sudo apt-get install python-gtk2; fi
+    - sudo apt-get install python-gi
     - sudo python setup.py install
-    - if [[ $TRAVIS_PYTHON_VERSION < 3.0 ]]; then pip install --use-mirrors pygtk; fi
-    - pip install --use-mirrors pygobject
 #script: make test
 notifications:
     email: false
