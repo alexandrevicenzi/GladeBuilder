@@ -10,6 +10,6 @@ install:
     - if [[ $TRAVIS_PYTHON_VERSION < 3.0 ]]; then sudo apt-get install python-gtk2; fi
     - sudo apt-get install python-gi
     - sudo python setup.py install
-script: python setup.py build
+script: sudo python setup.py build
 notifications:
     email: false
