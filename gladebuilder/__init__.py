@@ -1,8 +1,27 @@
 #!/usr/bin/env python
 # -*- encoding: UTF-8 -*-
 
-# A simple Glade Builder class.
-# 2013 (c) Alexandre Vicenzi (vicenzi.alexandre at gmail com)
+# The MIT License (MIT)
+
+# Copyright (c) 2013 Alexandre Vicenzi (vicenzi.alexandre at gmail com)
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
 
 import re
 import sys
@@ -112,19 +131,16 @@ class W:
         if isinstance(widget, Gtk.Window) or issubclass(type(widget), Gtk.Window):
             widget.set_title(v)
 
-        elif isinstance(widget, Gtk.AccelLabel) or issubclass(type(widget), Gtk.AccelLabel):
+        elif isinstance(widget, Gtk.AccelLabel) or \
+             issubclass(type(widget), Gtk.AccelLabel) or \
+             isinstance(widget, Gtk.Label) or \
+             issubclass(type(widget), Gtk.Label):
             widget.set_markup(v)
 
-        elif isinstance(widget, Gtk.Label) or issubclass(type(widget), Gtk.Label):
-            widget.set_markup(v)
-
-        elif isinstance(widget, Gtk.RadioButton) or issubclass(type(widget), Gtk.RadioButton):
-            if type(v) == str:
-                widget.set_label(v)
-            else:
-                widget.set_active(v)
-
-        elif isinstance(widget, Gtk.CheckButton) or issubclass(type(widget), Gtk.CheckButton):
+        elif isinstance(widget, Gtk.RadioButton) or \
+             issubclass(type(widget), Gtk.RadioButton) or \
+             isinstance(widget, Gtk.CheckButton) or \
+             issubclass(type(widget), Gtk.CheckButton):
             if type(v) == str:
                 widget.set_label(v)
             else:
@@ -136,22 +152,19 @@ class W:
             else:
                 widget.set_label(v)
 
-        elif isinstance(widget, Gtk.ScaleButton) or issubclass(type(widget), Gtk.ScaleButton):
+        elif isinstance(widget, Gtk.ScaleButton) or \
+             issubclass(type(widget), Gtk.ScaleButton) or \
+             isinstance(widget, Gtk.VolumeButton) or \
+             issubclass(type(widget), Gtk.VolumeButton):
             if type(v) == str:
                 widget.set_label(v)
             else:
                 widget.set_value(v)
 
-        elif isinstance(widget, Gtk.VolumeButton) or issubclass(type(widget), Gtk.VolumeButton):
-            if type(v) == str:
-                widget.set_label(v)
-            else:
-                widget.set_value(v)
-
-        elif isinstance(widget, Gtk.ToggleButton) or issubclass(type(widget), Gtk.ToggleButton):
-            widget.set_label(v)
-
-        elif isinstance(widget, Gtk.Button) or issubclass(type(widget), Gtk.Button):
+        elif isinstance(widget, Gtk.ToggleButton) or \
+             issubclass(type(widget), Gtk.ToggleButton) or \
+             isinstance(widget, Gtk.Button) or \
+             issubclass(type(widget), Gtk.Button):
             widget.set_label(v)
 
         elif isinstance(widget, Gtk.Calendar) or issubclass(type(widget), Gtk.Calendar):
