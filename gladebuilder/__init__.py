@@ -16,7 +16,8 @@ gtk_version = None
 
 try:
     from gi.repository import Gtk, GObject
-    gi.require_version('Gtk', '3.0')
+    from gi import require_version
+    require_version('Gtk', '3.0')
     gtk_version = GTK3
 except ImportError as e:
     try:
@@ -281,13 +282,15 @@ class GladeWindow:
             #builder.connect_signals(self)
             builder.connect_signals_full(self.__full_callback, self)
             self.window = builder.get_object(window_name)
-
         elif gtk_version == GTK2:
             tree = Glade.XML(glade_file)
             tree.signal_autoconnect(self)
             self.window = tree.get_widget(window_name)
         else:
             raise Exception('GTK version not supported.')
+
+        if not self.window:
+            raise Exception('Failed to open XML file.')
 
         self.__load_widgets()
 
@@ -337,7 +340,7 @@ class GladeWindow:
         # https://git.gnome.org/browse/pygobject/tree/gi/overrides/Gtk.py
         # TODO: Find a better way to connect signals from a specific window.
 
-        if not gtk_version < GTK3:
+        if gtk_version < GTK3:
             return
 
         handler = None
