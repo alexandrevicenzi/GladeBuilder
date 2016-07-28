@@ -27,7 +27,7 @@ And also has a method called `clear` to reset the widget content.
 
 ## Why this?
 
-Sometimes is painfull to use Gtk. So I added some cool functions to work with widgets. Doens't support all widgets yet.
+Sometimes is painfull to use Gtk. So I added some cool functions to work with widgets. Doesn't support all widgets yet.
 
 ## Want some examples?
 
